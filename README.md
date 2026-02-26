@@ -1,4 +1,4 @@
-# 🌐 Dev Thakur – Full Stack Portfolio
+# 🌐 Dev Kumar Jadaun– Full Stack Portfolio
 
 Welcome to my **personal full-stack portfolio website** built using
 **HTML, CSS, JavaScript, and Python Flask**.
