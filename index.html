@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dev Kumar Jadaun | Portfolio</title>
+    <meta name="description" content="Portfolio of Dev Kumar Jadaun, Computer Science Student and Developer." />
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;700;800;900&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Marvel Animations Container -->
+    <div id="marvel-container">
+        <!-- Arc Reactor Background -->
+        <div class="arc-reactor-bg">
+            <div class="arc-reactor">
+                <div class="core-inner"></div>
+                <div class="core-outer"></div>
+                <div class="ring">
+                    <div class="coil"></div>
+                    <div class="coil"></div>
+                    <div class="coil"></div>
+                    <div class="coil"></div>
+                    <div class="coil"></div>
+                    <div class="coil"></div>
+                    <div class="coil"></div>
+                    <div class="coil"></div>
+                </div>
+            </div>
+        </div>
+        <!-- Spider-Man Hanging -->
+        <div class="spidey-container">
+            <div class="web-line"></div>
+            <div class="spidey">
+                <!-- Simple SVG representation of Spider-Man hanging upside down -->
+                <svg width="60" height="100" viewBox="0 0 60 100">
+                    <g transform="scale(1, -1) translate(0, -100)">
+                        <circle cx="30" cy="85" r="10" fill="#e23636"/>
+                        <path d="M25 85 Q30 90 35 85" stroke="#000" stroke-width="1.5" fill="none"/>
+                        <!-- Eyes -->
+                        <path d="M24 87 L20 82 L26 83 Z" fill="#fff" stroke="#000" stroke-width="1"/>
+                        <path d="M36 87 L40 82 L34 83 Z" fill="#fff" stroke="#000" stroke-width="1"/>
+                        <!-- Body -->
+                        <path d="M25 75 L20 50 L40 50 L35 75 Z" fill="#005b96"/>
+                        <path d="M25 75 L30 65 L35 75 Z" fill="#e23636"/>
+                        <!-- Legs (hanging up) -->
+                        <path d="M20 50 Q10 70 25 100" stroke="#005b96" stroke-width="8" fill="none" stroke-linecap="round"/>
+                        <path d="M40 50 Q50 70 35 100" stroke="#005b96" stroke-width="8" fill="none" stroke-linecap="round"/>
+                        <!-- Arms (hanging down) -->
+                        <path d="M25 70 Q10 50 15 30" stroke="#e23636" stroke-width="6" fill="none" stroke-linecap="round"/>
+                        <path d="M35 70 Q50 50 45 30" stroke="#e23636" stroke-width="6" fill="none" stroke-linecap="round"/>
+                    </g>
+                </svg>
+            </div>
+        </div>
+        <!-- Thor's Hammer (Scroll Animation) -->
+        <div id="thor-hammer" class="thor-hammer">
+            <div class="hammer-handle"></div>
+            <div class="hammer-head">
+                <div class="hammer-bevel"></div>
+            </div>
+            <div class="hammer-strap"></div>
+        </div>
+    </div>
+    <!-- Custom Cursor -->
+    <div class="cursor-dot" id="cursor-dot"></div>
+    <div class="cursor-outline" id="cursor-outline"></div>
+    <!-- Navigation -->
+    <nav id="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo">Dev<span class="highlight">.</span></a>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#skills">Skills</a></li>
+                <li><a href="#projects">Projects</a></li>
+                <li><a href="#contact" class="btn-nav">Let's Talk</a></li>
+            </ul>
+            <div class="nav-actions">
+                <button id="theme-toggle" class="theme-btn" aria-label="Toggle Theme">
+                    <i class="fas fa-sun"></i>
+                </button>
+                <div class="hamburger">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-content" style="max-width: 800px; margin: 0 auto; text-align: center;">
+            <p class="greeting reveal">Hello, I am</p>
+            <h1 class="reveal delay-1">Dev Kumar <span class="text-gradient">Jadaun</span></h1>
+            <h2 class="reveal delay-2">Computer Science <span class="typing-text">Student</span></h2>
+            <p class="hero-desc reveal delay-3" style="margin: 0 auto 2.5rem;">I am a B.Tech Computer Science student and Java Developer crafting robust applications and continuously learning modern technologies.</p>
+            <div class="hero-buttons reveal delay-4" style="justify-content: center;">
+                <a href="#projects" class="btn btn-primary">View My Work <i class="fas fa-arrow-right"></i></a>
+                <a href="#contact" class="btn btn-secondary">Contact Me</a>
+            </div>
+        </div>
+        <a href="#about" class="scroll-indicator">
+            <div class="mouse"></div>
+            <p>Scroll Down</p>
+        </a>
+    </section>
+    <!-- About Section -->
+    <section id="about" class="section">
+        <div class="container">
+            <h2 class="section-title reveal">About <span class="text-gradient">Me</span></h2>
+            <div class="about-content">
+                <div class="about-text glass-panel reveal tilt-card">
+                    <p>I am a Computer Science Engineering student at GLA University with a strong passion for software development, web technologies, and artificial intelligence. I enjoy building real-world projects, solving Data Structures and Algorithms problems in Java, and continuously learning modern technologies.</p>
+                    <p>I aim to become a skilled software engineer by creating impactful applications and actively participating in technical events and hackathons.</p>
+                    <div class="stats">
+                        <div class="stat-item">
+                            <h3>B.Tech</h3>
+                            <p>GLA University</p>
+                        </div>
+                        <div class="stat-item">
+                            <h3>2025</h3>
+                            <p>Batch</p>
+                        </div>
+                        <div class="stat-item">
+                            <h3>100%</h3>
+                            <p>Dedication</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Skills Section -->
+    <section id="skills" class="section">
+        <div class="container">
+            <h2 class="section-title reveal">My <span class="text-gradient">Arsenal</span></h2>
+            <div class="skills-container reveal">
+                <div class="skill-category glass-panel tilt-card">
+                    <h3>Frontend Development</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag"><i class="fab fa-react"></i> React.js</span>
+                        <span class="skill-tag"><i class="fab fa-js"></i> JavaScript</span>
+                        <span class="skill-tag"><i class="fab fa-html5"></i> HTML5</span>
+                        <span class="skill-tag"><i class="fab fa-css3-alt"></i> CSS3</span>
+                        <span class="skill-tag"><i class="fas fa-wind"></i> Tailwind CSS</span>
+                        <span class="skill-tag"><i class="fas fa-bolt"></i> Vite</span>
+                    </div>
+                </div>
+                <div class="skill-category glass-panel tilt-card">
+                    <h3>Backend, Tools & Languages</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag"><i class="fab fa-java"></i> Java</span>
+                        <span class="skill-tag"><i class="fab fa-python"></i> Python</span>
+                        <span class="skill-tag"><i class="fab fa-node-js"></i> Node.js</span>
+                        <span class="skill-tag"><i class="fas fa-server"></i> Express.js</span>
+                        <span class="skill-tag"><i class="fas fa-database"></i> MySQL</span>
+                        <span class="skill-tag"><i class="fab fa-git-alt"></i> Git & GitHub</span>
+                    </div>
+                </div>
+                <div class="skill-category glass-panel tilt-card" style="grid-column: 1 / -1; margin-top: 1.5rem;">
+                    <h3>Core Concepts</h3>
+                    <div class="skill-tags" style="justify-content: center;">
+                        <span class="skill-tag"><i class="fas fa-code"></i> Data Structures & Algorithms</span>
+                        <span class="skill-tag"><i class="fas fa-cubes"></i> Object-Oriented Programming</span>
+                        <span class="skill-tag"><i class="fas fa-database"></i> DBMS</span>
+                        <span class="skill-tag"><i class="fas fa-desktop"></i> Operating Systems</span>
+                        <span class="skill-tag"><i class="fas fa-network-wired"></i> Computer Networks</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Experience Section -->
+    <section id="experience" class="section">
+        <div class="container">
+            <h2 class="section-title reveal">My <span class="text-gradient">Journey</span></h2>
+            <div class="timeline">
+                <div class="timeline-item reveal">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content glass-panel tilt-card">
+                        <h3>B.Tech Computer Science Engineering</h3>
+                        <h4>GLA University, Mathura | 2025 - Present</h4>
+                        <p>Pursuing my degree with a focus on Full Stack development, regularly practicing Data Structures and Algorithms using Java.</p>
+                    </div>
+                </div>
+                <div class="timeline-item reveal">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content glass-panel tilt-card">
+                        <h3>Hackathons & Technical Events</h3>
+                        <h4>University Events | Active Participant</h4>
+                        <p>Regularly participating in university technical events and hackathons to build impactful projects and solve real-world problems.</p>
+                    </div>
+                </div>
+                <div class="timeline-item reveal">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content glass-panel tilt-card">
+                        <h3>Open Source & Projects</h3>
+                        <h4>Continuous Learning | Present</h4>
+                        <p>Built multiple academic and personal software development projects. Active GitHub contributor and AI enthusiast.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Projects Section -->
+    <section id="projects" class="section">
+        <div class="container">
+            <h2 class="section-title reveal">Featured <span class="text-gradient">Projects</span></h2>
+            <div class="projects-grid">
+                <!-- Project 1 -->
+                <div class="project-card glass-panel reveal tilt-card">
+                    <div class="project-img">
+                        <img src="assets/abstract_weather_1786119253828.jpg" alt="Weather Dashboard" style="width: 100%; height: 100%; object-fit: cover;">
+                        <div class="project-overlay">
+                            <a href="https://github.com/devjadaun/weather-dashboard" target="_blank" class="btn-icon"><i class="fab fa-github"></i></a>
+                        </div>
+                    </div>
+                    <div class="project-info">
+                        <div class="project-tags">
+                            <span>HTML</span>
+                            <span>CSS</span>
+                            <span>JavaScript</span>
+                        </div>
+                        <h3>Weather Dashboard</h3>
+                        <p>Real-time weather application with current location support, 5-day forecast, AQI data, Sunrise/Sunset info, and animated weather effects.</p>
+                    </div>
+                </div>
+                <!-- Project 2 -->
+                <div class="project-card glass-panel reveal delay-1 tilt-card">
+                    <div class="project-img">
+                        <img src="assets/abstract_task_1786119270932.jpg" alt="Smart Task Manager" style="width: 100%; height: 100%; object-fit: cover;">
+                        <div class="project-overlay">
+                            <a href="https://github.com/devjadaun/smart-task-manager" target="_blank" class="btn-icon"><i class="fab fa-github"></i></a>
+                        </div>
+                    </div>
+                    <div class="project-info">
+                        <div class="project-tags">
+                            <span>HTML</span>
+                            <span>CSS</span>
+                            <span>JavaScript</span>
+                        </div>
+                        <h3>Smart Task Manager</h3>
+                        <p>A modern and feature-rich productivity web application designed to help users efficiently manage daily tasks and organize priorities.</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+    <!-- Testimonials Section removed to keep it professional for a student -->
+    <!-- Contact Section -->
+    <section id="contact" class="section">
+        <div class="container">
+            <h2 class="section-title reveal">Get in <span class="text-gradient">Touch</span></h2>
+            <div class="contact-wrapper">
+                <div class="contact-info glass-panel reveal tilt-card">
+                    <h3>Let's Connect</h3>
+                    <p>Have a project in mind, a hackathon team to form, or just want to say hi? I'd love to hear from you.</p>
+                    <div class="contact-details">
+                        <div class="contact-item">
+                            <div class="icon-box"><i class="fas fa-envelope"></i></div>
+                            <div>
+                                <h4>Email</h4>
+                                <a href="mailto:devthakur6920@gmail.com">devthakur6920@gmail.com</a>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <div class="icon-box"><i class="fas fa-map-marker-alt"></i></div>
+                            <div>
+                                <h4>Location</h4>
+                                <p>Mathura, UP (GLA University)</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="social-links">
+                        <a href="https://github.com/devjadaun" target="_blank" class="social-icon"><i class="fab fa-github"></i></a>
+                        <a href="https://www.linkedin.com/in/dev-kumar-jadaun-479172396" target="_blank" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="contact-form glass-panel reveal delay-1 tilt-card">
+                    <form id="form">
+                        <div class="form-group">
+                            <input type="text" id="name" required placeholder=" ">
+                            <label for="name">Your Name</label>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" id="email" required placeholder=" ">
+                            <label for="email">Your Email</label>
+                        </div>
+                        <div class="form-group">
+                            <textarea id="message" required placeholder=" " rows="4"></textarea>
+                            <label for="message">Your Message</label>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block">Send Message <i class="fas fa-paper-plane"></i></button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <p>&copy; 2026 Dev Kumar Jadaun. All rights reserved.</p>
+                <div class="footer-links">
+                    <a href="https://github.com/devjadaun" target="_blank">GitHub</a>
+                    <a href="https://www.linkedin.com/in/dev-kumar-jadaun-479172396" target="_blank">LinkedIn</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="script.js"></script>
+</body>
+</html>
+
