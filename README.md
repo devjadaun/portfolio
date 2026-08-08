@@ -7,32 +7,35 @@ A premium, interactive developer portfolio built with a sleek dark glassmorphism
 
 ## ✨ Features
 
-- **Premium Glassmorphism Design**: Sleek, modern frosted glass UI elements.
+- **Premium Glassmorphism Design**: Sleek, modern frosted glass UI elements with a cohesive dark theme.
 - **Custom Marvel Easter Eggs**:
-  - 🌟 Glowing Iron Man Arc Reactor background animation.
-  - 🕸️ Interactive swinging Spider-Man (Click him for a surprise!).
+  - 🌟 Glowing Iron Man Arc Reactor boot-up splash screen and background animation.
+  - 🕸️ Interactive swinging Spider-Man (Tracks mouse movement & clicks for acrobatics!).
   - 🔨 Thor's Mjolnir hammer that scrolls with the page.
+- **Interactive Hacker Terminal**: The 'About Me' section acts as a mock command-line interface that types out the biography and stats.
+- **Dedicated Resume Page**: A beautifully designed, print-friendly standalone HTML resume linked directly from the hero section.
 - **Interactive Custom Cursor**: A trailing, glowing cursor that reacts to clickable elements.
-- **Dynamic Typing Effect**: Eye-catching hero section typography.
-- **Responsive Layout**: fully optimized for desktop, tablet, and mobile devices.
-- **Working Contact Form**: Utilizes `mailto:` to open the user's default email client, requiring no backend setup.
-- **Smooth Scroll & Reveal Animations**: Sections beautifully fade in as you scroll down.
+- **Responsive Layout**: Fully optimized for desktop, tablet, and mobile devices.
+- **SEO Optimized**: Includes Open Graph (OG) meta tags for professional previews when sharing links on social platforms.
+- **Working Contact Form**: Utilizes `mailto:` to seamlessly open the user's default email client.
+- **Polished UX**: Custom-styled neon scrollbar and smooth scroll reveal animations.
 
 ## 🛠️ Tech Stack
 
 This project is built purely with standard web technologies for maximum performance without relying on heavy frameworks:
 - **HTML5** (Semantic structure)
-- **CSS3** (Variables, Flexbox, CSS Grid, Keyframe Animations)
-- **Vanilla JavaScript** (DOM manipulation, Intersection Observer API, Event Listeners)
+- **CSS3** (Variables, Flexbox, CSS Grid, Keyframe Animations, `@media print`)
+- **Vanilla JavaScript** (DOM manipulation, Intersection Observer API, Event Listeners, Physics math)
 
 ## 📂 Sections
 
-1. **Home/Hero**: Introduction and primary call-to-actions.
-2. **About Me**: Brief biography and current academic journey.
+1. **Home/Hero**: Introduction, primary call-to-actions, and Download Resume button.
+2. **About Me (Mock Terminal)**: A unique CLI-style biography and academic statistics.
 3. **Skills**: Categorized layout of frontend, backend, and core CS concepts.
 4. **Experience**: Timeline of education, hackathons, and open source involvement.
 5. **Projects**: Featured repositories with hover states and AI-generated abstract art thumbnails.
-6. **Contact**: Reach out via a fully functional email form.
+6. **Certificates**: Showcase of recent certifications (QuizOff, Google AI, MEAN Stack).
+7. **Contact**: Reach out via a fully functional email form and social links.
 
 ## 💻 Running Locally
 
