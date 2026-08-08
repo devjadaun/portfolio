@@ -1,3 +1,15 @@
+// Preloader logic
+window.addEventListener('load', () => {
+    const preloader = document.getElementById('preloader');
+    if (preloader) {
+        // Add a slight delay for dramatic effect
+        setTimeout(() => {
+            preloader.style.opacity = '0';
+            preloader.style.visibility = 'hidden';
+        }, 1500);
+    }
+});
+
 document.addEventListener('DOMContentLoaded', () => {
     // Custom Cursor
     const cursorDot = document.getElementById('cursor-dot');

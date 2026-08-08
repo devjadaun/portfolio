@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume | Dev Kumar Jadaun</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            /* Screen Theme (Dark & Premium) */
+            --bg-color: #0a0a0f;
+            --surface-color: rgba(15, 20, 30, 0.85);
+            --text-primary: #ffffff;
+            --text-secondary: #a0aec0;
+            --accent-gradient: linear-gradient(135deg, #e23636, #00d2ff);
+            --accent-solid: #00d2ff;
+            --border-color: rgba(255,255,255,0.1);
+            
+            --font-heading: 'Outfit', sans-serif;
+            --font-body: 'Inter', sans-serif;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            font-family: var(--font-body);
+            line-height: 1.6;
+            padding: 40px 20px;
+            background-image: 
+                radial-gradient(circle at 15% 50%, rgba(226, 54, 54, 0.05), transparent 25%),
+                radial-gradient(circle at 85% 30%, rgba(0, 210, 255, 0.05), transparent 25%);
+        }
+        
+        .action-bar {
+            max-width: 1000px;
+            margin: 0 auto 20px;
+            display: flex;
+            justify-content: flex-end;
+        }
+        
+        .download-btn {
+            padding: 12px 24px;
+            background: var(--accent-gradient);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            font-family: var(--font-heading);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 4px 15px rgba(0, 210, 255, 0.3);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 210, 255, 0.5);
+        }
+
+        .resume-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: var(--surface-color);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            display: grid;
+            grid-template-columns: 320px 1fr;
+            overflow: hidden;
+        }
+        
+        /* Left Sidebar */
+        .sidebar {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 40px;
+            border-right: 1px solid var(--border-color);
+        }
+        
+        .profile-pic {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: var(--accent-gradient);
+            margin: 0 auto 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 3rem;
+            color: white;
+            font-family: var(--font-heading);
+            font-weight: 800;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+        }
+        
+        .sidebar-section {
+            margin-bottom: 40px;
+        }
+        
+        h3 {
+            font-family: var(--font-heading);
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        h3 i { color: var(--accent-solid); }
+        
+        .contact-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .contact-list li {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+        
+        .contact-list a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        
+        .contact-list a:hover {
+            color: var(--text-primary);
+        }
+        
+        .contact-icon {
+            width: 35px;
+            height: 35px;
+            border-radius: 8px;
+            background: rgba(255,255,255,0.05);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--accent-solid);
+        }
+        
+        .skill-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .skill-tag {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 6px 14px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            color: var(--text-primary);
+        }
+        
+        .education-item h4 {
+            font-family: var(--font-heading);
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+        
+        .education-item p {
+            color: var(--accent-solid);
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+        }
+        
+        .education-item span {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
+
+        /* Right Content Area */
+        .content {
+            padding: 50px;
+        }
+        
+        .header {
+            margin-bottom: 40px;
+        }
+        
+        h1 {
+            font-family: var(--font-heading);
+            font-size: 3.5rem;
+            line-height: 1.1;
+            margin-bottom: 10px;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        h2 {
+            font-family: var(--font-heading);
+            font-weight: 400;
+            font-size: 1.5rem;
+            color: var(--text-secondary);
+        }
+        
+        .summary {
+            font-size: 1.05rem;
+            color: var(--text-secondary);
+            margin-bottom: 40px;
+            line-height: 1.8;
+        }
+        
+        .content-section {
+            margin-bottom: 40px;
+        }
+        
+        .section-title {
+            font-family: var(--font-heading);
+            font-size: 1.8rem;
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-primary);
+        }
+        
+        .project-item {
+            margin-bottom: 30px;
+        }
+        
+        .project-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 8px;
+        }
+        
+        .project-title {
+            font-family: var(--font-heading);
+            font-size: 1.3rem;
+            color: var(--text-primary);
+        }
+        
+        .project-link {
+            font-size: 0.9rem;
+            color: var(--accent-solid);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .project-tech {
+            font-size: 0.85rem;
+            color: #e23636; /* Red accent for tech stack */
+            margin-bottom: 10px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .bullet-list {
+            list-style-type: none;
+            color: var(--text-secondary);
+        }
+        
+        .bullet-list li {
+            margin-bottom: 10px;
+            padding-left: 20px;
+            position: relative;
+        }
+        
+        .bullet-list li::before {
+            content: '▹';
+            position: absolute;
+            left: 0;
+            color: var(--accent-solid);
+            font-weight: bold;
+        }
+        
+        .cert-list li {
+            margin-bottom: 15px;
+        }
+        
+        .cert-list strong {
+            color: var(--text-primary);
+        }
+
+        /* Print Styles - Overrides dark theme to make it ink-friendly */
+        @media print {
+            body {
+                background: white;
+                color: #222;
+                padding: 0;
+            }
+            .action-bar { display: none; }
+            .resume-container {
+                box-shadow: none;
+                border: none;
+                border-radius: 0;
+                grid-template-columns: 280px 1fr;
+                max-width: 100%;
+                background: white;
+            }
+            .sidebar {
+                background: #f8f9fa;
+                border-right: 1px solid #ddd;
+                padding: 30px 20px;
+            }
+            .content {
+                padding: 30px 40px;
+            }
+            h1 {
+                background: none;
+                -webkit-background-clip: unset;
+                -webkit-text-fill-color: unset;
+                color: #111;
+            }
+            h3, .section-title {
+                color: #111;
+                border-bottom-color: #ddd;
+            }
+            .contact-list a, .summary, .bullet-list, .education-item span {
+                color: #444;
+            }
+            .skill-tag {
+                background: #e9ecef;
+                border-color: #dee2e6;
+                color: #222;
+            }
+            .contact-icon {
+                background: none;
+                color: #444;
+                width: 25px;
+            }
+            h3 i { color: #444; }
+            .project-tech { color: #666; }
+            .bullet-list li::before { color: #666; }
+            .profile-pic {
+                box-shadow: none;
+                border: 2px solid #ddd;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .resume-container {
+                grid-template-columns: 1fr;
+            }
+            .sidebar {
+                border-right: none;
+                border-bottom: 1px solid var(--border-color);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="action-bar">
+        <a href="#" class="download-btn" onclick="window.print(); return false;">
+            <i class="fas fa-file-pdf"></i> Download PDF
+        </a>
+    </div>
+
+    <div class="resume-container">
+        <!-- Left Sidebar -->
+        <div class="sidebar">
+            <div class="profile-pic">
+                DKJ
+            </div>
+            
+            <div class="sidebar-section">
+                <h3><i class="fas fa-address-card"></i> Contact</h3>
+                <ul class="contact-list">
+                    <li>
+                        <div class="contact-icon"><i class="fas fa-envelope"></i></div>
+                        <a href="mailto:devthakur6920@gmail.com">devthakur6920@gmail.com</a>
+                    </li>
+                    <li>
+                        <div class="contact-icon"><i class="fab fa-github"></i></div>
+                        <a href="https://github.com/devjadaun" target="_blank">github.com/devjadaun</a>
+                    </li>
+                    <li>
+                        <div class="contact-icon"><i class="fab fa-linkedin-in"></i></div>
+                        <a href="https://www.linkedin.com/in/dev-kumar-jadaun-479172396" target="_blank">linkedin.com/in/dev-kumar-jadaun</a>
+                    </li>
+                    <li>
+                        <div class="contact-icon"><i class="fas fa-map-marker-alt"></i></div>
+                        <span>Mathura, India</span>
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="sidebar-section">
+                <h3><i class="fas fa-code"></i> Skills</h3>
+                <div class="skill-tags">
+                    <span class="skill-tag">Java</span>
+                    <span class="skill-tag">C</span>
+                    <span class="skill-tag">Python</span>
+                    <span class="skill-tag">JavaScript</span>
+                    <span class="skill-tag">HTML5 & CSS3</span>
+                    <span class="skill-tag">React.js</span>
+                    <span class="skill-tag">Vite</span>
+                    <span class="skill-tag">Tailwind CSS</span>
+                    <span class="skill-tag">MEAN Stack</span>
+                    <span class="skill-tag">DSA</span>
+                </div>
+            </div>
+            
+            <div class="sidebar-section">
+                <h3><i class="fas fa-graduation-cap"></i> Education</h3>
+                <div class="education-item">
+                    <h4>B.Tech in Computer Science (Full Stack)</h4>
+                    <p>GLA University, Mathura</p>
+                    <span>Expected Graduation: 2025</span>
+                </div>
+            </div>
+            
+            <div class="sidebar-section">
+                <h3><i class="fas fa-language"></i> Languages</h3>
+                <div class="skill-tags">
+                    <span class="skill-tag">English</span>
+                    <span class="skill-tag">Hindi</span>
+                </div>
+            </div>
+            
+            <div class="sidebar-section">
+                <h3><i class="fas fa-gamepad"></i> Hobbies</h3>
+                <div class="skill-tags">
+                    <span class="skill-tag">Competitive Programming</span>
+                    <span class="skill-tag">Exploring AI</span>
+                    <span class="skill-tag">Tech Blogging</span>
+                    <span class="skill-tag">E-sports</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Content Area -->
+        <div class="content">
+            <div class="header">
+                <h1>Dev Kumar Jadaun</h1>
+                <h2>Computer Science Student & Full Stack Developer</h2>
+            </div>
+            
+            <p class="summary">
+                Passionate Computer Science Engineering student with a strong foundation in Java and Full Stack web technologies. Enthusiastic about artificial intelligence, solving complex Data Structures and Algorithms problems, and building impactful real-world applications. Proven track record of active participation in technical events, global hackathons, and continuous learning.
+            </p>
+            
+            <div class="content-section">
+                <h3 class="section-title">Projects</h3>
+                
+                <div class="project-item">
+                    <div class="project-header">
+                        <div class="project-title">Weather Dashboard</div>
+                        <a href="https://github.com/devjadaun/weather-dashboard" target="_blank" class="project-link">
+                            <i class="fas fa-external-link-alt"></i> Source Code
+                        </a>
+                    </div>
+                    <div class="project-tech">HTML • CSS • JavaScript</div>
+                    <ul class="bullet-list">
+                        <li>Developed a real-time weather application with current location support and global search capabilities.</li>
+                        <li>Integrated external APIs to fetch and display a 5-day forecast, Air Quality Index (AQI) data, and Sunrise/Sunset information.</li>
+                        <li>Designed an intuitive, responsive interface with dynamic animated weather effects based on current conditions.</li>
+                    </ul>
+                </div>
+                
+                <div class="project-item">
+                    <div class="project-header">
+                        <div class="project-title">Smart Task Manager</div>
+                        <a href="https://github.com/devjadaun/smart-task-manager" target="_blank" class="project-link">
+                            <i class="fas fa-external-link-alt"></i> Source Code
+                        </a>
+                    </div>
+                    <div class="project-tech">HTML • CSS • JavaScript</div>
+                    <ul class="bullet-list">
+                        <li>Built a modern, feature-rich productivity web application to help users efficiently manage daily tasks and organize priorities.</li>
+                        <li>Implemented dynamic DOM manipulation for seamless task creation, editing, and status tracking.</li>
+                        <li>Utilized local storage for persistent state management across sessions without requiring a backend database.</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="content-section">
+                <h3 class="section-title">Certifications & Achievements</h3>
+                <ul class="bullet-list cert-list">
+                    <li><strong>QuizOff 2026: India's Biggest AI Quiz</strong><br> Recognized among top students globally by CampusCrew & Unstop for competing in a massive AI knowledge event.</li>
+                    <li><strong>Google AI Educator Series</strong><br> Awarded by Google for Education & Gemini for successful completion of the five-hour AI educator series for India.</li>
+                    <li><strong>Full Stack Development with MEAN</strong><br> Earned a Certificate of Excellence from NASSCOM Foundation & thingQbator program.</li>
+                </ul>
+            </div>
+            
+        </div>
+    </div>
+
+</body>
+</html>

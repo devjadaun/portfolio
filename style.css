@@ -61,6 +61,21 @@ body {
     color: white;
 }
 
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+::-webkit-scrollbar-track {
+    background: var(--bg-dark);
+}
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(to bottom, var(--accent-1), var(--accent-2));
+    border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(to bottom, var(--accent-2), var(--accent-3));
+}
+
 /* Typography */
 h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-heading);
@@ -1193,4 +1208,54 @@ footer {
     left: 50%;
     transform: translateX(-50%);
     clip-path: polygon(0 50%, 100% 50%, 100% 100%, 0 100%);
+}
+
+/* Preloader */
+#preloader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--bg-dark);
+    z-index: 99999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.8s ease-out, visibility 0.8s ease-out;
+}
+
+.preloader-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+}
+
+.reactor-loader {
+    position: relative;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(0,210,255,0.8) 0%, rgba(0,210,255,0) 70%);
+    animation: arcPulse 1.5s infinite alternate ease-in-out;
+}
+
+.reactor-loader .core-inner {
+    top: 40%; left: 40%; width: 20%; height: 20%;
+}
+.reactor-loader .core-outer {
+    top: 25%; left: 25%; width: 50%; height: 50%;
+}
+.reactor-loader .ring {
+    top: 10%; left: 10%; width: 80%; height: 80%;
+}
+
+.loading-text {
+    font-family: var(--font-heading);
+    color: var(--accent-2);
+    font-size: 1.2rem;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    animation: blink 1s infinite step-end;
 }

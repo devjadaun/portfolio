@@ -6,6 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Dev Kumar Jadaun | Portfolio</title>
     <meta name="description" content="Portfolio of Dev Kumar Jadaun, Computer Science Student and Developer." />
+    <!-- Open Graph / SEO Tags -->
+    <meta property="og:title" content="Dev Kumar Jadaun | Portfolio" />
+    <meta property="og:description" content="Explore the projects, skills, and journey of Dev Kumar Jadaun, a passionate CS student and Full Stack Developer." />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="assets/hero_abstract_1786082221662.jpg" />
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -15,6 +20,18 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <!-- Preloader -->
+    <div id="preloader">
+        <div class="preloader-content">
+            <div class="reactor-loader">
+                <div class="core-inner"></div>
+                <div class="core-outer"></div>
+                <div class="ring"></div>
+            </div>
+            <div class="loading-text">INITIALIZING SYSTEM...</div>
+        </div>
+    </div>
+
     <!-- Marvel Animations Container -->
     <div id="marvel-container">
         <!-- Arc Reactor Background -->
@@ -80,6 +97,7 @@
                 <li><a href="#about">About</a></li>
                 <li><a href="#skills">Skills</a></li>
                 <li><a href="#projects">Projects</a></li>
+                <li><a href="#certificates">Certificates</a></li>
                 <li><a href="#contact" class="btn-nav">Let's Talk</a></li>
             </ul>
             <div class="nav-actions">
@@ -102,6 +120,7 @@
             <div class="hero-buttons reveal delay-4" style="justify-content: center;">
                 <a href="#projects" class="btn btn-primary">View My Work <i class="fas fa-arrow-right"></i></a>
                 <a href="#contact" class="btn btn-secondary">Contact Me</a>
+                <a href="resume.html" target="_blank" class="btn btn-secondary"><i class="fas fa-download"></i> Resume</a>
             </div>
         </div>
         <a href="#about" class="scroll-indicator">
@@ -114,21 +133,39 @@
         <div class="container">
             <h2 class="section-title reveal">About <span class="text-gradient">Me</span></h2>
             <div class="about-content">
-                <div class="about-text glass-panel reveal tilt-card">
-                    <p>I am a Computer Science Engineering student at GLA University with a strong passion for software development, web technologies, and artificial intelligence. I enjoy building real-world projects, solving Data Structures and Algorithms problems in Java, and continuously learning modern technologies.</p>
-                    <p>I aim to become a skilled software engineer by creating impactful applications and actively participating in technical events and hackathons.</p>
-                    <div class="stats">
-                        <div class="stat-item">
-                            <h3>B.Tech</h3>
-                            <p>GLA University</p>
+                <div class="terminal-window glass-panel reveal tilt-card" style="width: 100%; max-width: 800px; text-align: left; padding: 0; overflow: hidden;">
+                    <div class="terminal-header" style="background: rgba(0,0,0,0.5); padding: 10px 15px; display: flex; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.1);">
+                        <div class="terminal-buttons" style="display: flex; gap: 8px;">
+                            <span style="width: 12px; height: 12px; border-radius: 50%; background: #ff5f56;"></span>
+                            <span style="width: 12px; height: 12px; border-radius: 50%; background: #ffbd2e;"></span>
+                            <span style="width: 12px; height: 12px; border-radius: 50%; background: #27c93f;"></span>
                         </div>
-                        <div class="stat-item">
-                            <h3>2025</h3>
-                            <p>Batch</p>
-                        </div>
-                        <div class="stat-item">
-                            <h3>100%</h3>
-                            <p>Dedication</p>
+                        <div class="terminal-title" style="flex: 1; text-align: center; font-family: monospace; font-size: 0.9rem; color: #8c9eb5;">dev_jadaun@portfolio: ~</div>
+                    </div>
+                    <div class="terminal-body" style="padding: 2rem; font-family: 'Courier New', Courier, monospace; font-size: 1.05rem;">
+                        <p style="margin-bottom: 10px;"><span style="color: #00ff88;">dev_jadaun@portfolio</span>:<span style="color: #00d2ff;">~</span>$ whoami</p>
+                        <p style="color: #a0aec0; margin-bottom: 20px; line-height: 1.6;">
+                            I am a Computer Science Engineering student at GLA University with a strong passion for software development, web technologies, and artificial intelligence. I enjoy building real-world projects, solving Data Structures and Algorithms problems in Java, and continuously learning modern technologies.
+                        </p>
+                        <p style="margin-bottom: 10px;"><span style="color: #00ff88;">dev_jadaun@portfolio</span>:<span style="color: #00d2ff;">~</span>$ cat goals.txt</p>
+                        <p style="color: #a0aec0; margin-bottom: 20px; line-height: 1.6;">
+                            I aim to become a skilled software engineer by creating impactful applications and actively participating in technical events and hackathons.
+                        </p>
+                        <p><span style="color: #00ff88;">dev_jadaun@portfolio</span>:<span style="color: #00d2ff;">~</span>$ <span style="display: inline-block; width: 10px; height: 1.2em; background: #fff; vertical-align: middle; animation: blink 1s step-end infinite;"></span></p>
+                        
+                        <div class="stats" style="margin-top: 2rem; border-top: 1px dashed rgba(255,255,255,0.2); padding-top: 2rem; display: flex; justify-content: space-around; text-align: center; font-family: var(--font-body);">
+                            <div class="stat-item">
+                                <h3 style="font-size: 2.5rem; color: var(--accent-1); font-family: var(--font-heading);">B.Tech</h3>
+                                <p style="text-transform: uppercase; letter-spacing: 1px; font-size: 0.9rem;">GLA University</p>
+                            </div>
+                            <div class="stat-item">
+                                <h3 style="font-size: 2.5rem; color: var(--accent-1); font-family: var(--font-heading);">2025</h3>
+                                <p style="text-transform: uppercase; letter-spacing: 1px; font-size: 0.9rem;">Batch</p>
+                            </div>
+                            <div class="stat-item">
+                                <h3 style="font-size: 2.5rem; color: var(--accent-1); font-family: var(--font-heading);">100%</h3>
+                                <p style="text-transform: uppercase; letter-spacing: 1px; font-size: 0.9rem;">Dedication</p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -249,6 +286,56 @@
                     </div>
                 </div>
 
+            </div>
+        </div>
+    </section>
+    <!-- Certificates Section -->
+    <section id="certificates" class="section">
+        <div class="container">
+            <h2 class="section-title reveal">My <span class="text-gradient">Certificates</span></h2>
+            <div class="projects-grid">
+                <!-- Certificate 1 -->
+                <div class="project-card glass-panel reveal tilt-card" style="padding: 1rem;">
+                    <div class="project-img" style="height: 200px;">
+                        <img src="assets/cert1_quizoff.png" alt="QuizOff 2026 Certificate" style="width: 100%; height: 100%; object-fit: contain;">
+                    </div>
+                    <div class="project-info">
+                        <div class="project-tags">
+                            <span>CampusCrew</span>
+                            <span>Unstop</span>
+                        </div>
+                        <h3>QuizOff 2026 AI Quiz</h3>
+                        <p>Recognized among select students for competing in a massive global AI quiz event.</p>
+                    </div>
+                </div>
+                <!-- Certificate 2 -->
+                <div class="project-card glass-panel reveal delay-1 tilt-card" style="padding: 1rem;">
+                    <div class="project-img" style="height: 200px;">
+                        <img src="assets/cert2_googleai.png" alt="Google AI Educator Series Certificate" style="width: 100%; height: 100%; object-fit: contain;">
+                    </div>
+                    <div class="project-info">
+                        <div class="project-tags">
+                            <span>Google</span>
+                            <span>Gemini</span>
+                        </div>
+                        <h3>Google AI Educator</h3>
+                        <p>Awarded for the successful completion of the five-hour Google AI Educator Series for India.</p>
+                    </div>
+                </div>
+                <!-- Certificate 3 -->
+                <div class="project-card glass-panel reveal delay-2 tilt-card" style="padding: 1rem;">
+                    <div class="project-img" style="height: 200px;">
+                        <img src="assets/cert3_mean.png" alt="Full Stack MEAN Certificate" style="width: 100%; height: 100%; object-fit: contain;">
+                    </div>
+                    <div class="project-info">
+                        <div class="project-tags">
+                            <span>NASSCOM</span>
+                            <span>thingQbator</span>
+                        </div>
+                        <h3>Full Stack with MEAN</h3>
+                        <p>Certificate of Excellence for successfully completing the Full Stack MEAN course.</p>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
