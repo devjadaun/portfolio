@@ -10,7 +10,139 @@ window.addEventListener('load', () => {
     }
 });
 
+// =========================================
+// AMBIENT SOUND ENGINE (Web Audio API)
+// Generates a lo-fi atmospheric drone -
+// no external audio file required!
+// =========================================
+(function () {
+    let audioCtx = null;
+    let masterGain = null;
+    let isPlaying = false;
+    let nodes = [];
+
+    function buildAmbientSound(ctx) {
+        const master = ctx.createGain();
+        master.gain.setValueAtTime(0, ctx.currentTime);
+        master.connect(ctx.destination);
+
+        // --- Soft bass drone (sine wave) ---
+        const drone1 = ctx.createOscillator();
+        drone1.type = 'sine';
+        drone1.frequency.value = 55; // A1 note
+        const drone1Gain = ctx.createGain();
+        drone1Gain.gain.value = 0.08;
+        drone1.connect(drone1Gain);
+        drone1Gain.connect(master);
+        drone1.start();
+
+        // --- Slightly detuned second drone for warmth ---
+        const drone2 = ctx.createOscillator();
+        drone2.type = 'sine';
+        drone2.frequency.value = 55.6; // very slightly detuned
+        const drone2Gain = ctx.createGain();
+        drone2Gain.gain.value = 0.06;
+        drone2.connect(drone2Gain);
+        drone2Gain.connect(master);
+        drone2.start();
+
+        // --- High harmonic shimmer ---
+        const shimmer = ctx.createOscillator();
+        shimmer.type = 'sine';
+        shimmer.frequency.value = 220; // A3
+        const shimmerGain = ctx.createGain();
+        shimmerGain.gain.value = 0.025;
+        // LFO to make shimmer breathe
+        const lfo = ctx.createOscillator();
+        lfo.frequency.value = 0.2;
+        const lfoGain = ctx.createGain();
+        lfoGain.gain.value = 0.015;
+        lfo.connect(lfoGain);
+        lfoGain.connect(shimmerGain.gain);
+        lfo.start();
+        shimmer.connect(shimmerGain);
+        shimmerGain.connect(master);
+        shimmer.start();
+
+        // --- Filtered white noise (rain/wind texture) ---
+        const bufferSize = ctx.sampleRate * 4; // 4 seconds of noise
+        const noiseBuffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+        const data = noiseBuffer.getChannelData(0);
+        for (let i = 0; i < bufferSize; i++) {
+            data[i] = Math.random() * 2 - 1;
+        }
+        const noiseSource = ctx.createBufferSource();
+        noiseSource.buffer = noiseBuffer;
+        noiseSource.loop = true;
+
+        // Low-pass filter to make it a soft hiss, not harsh
+        const noiseFilter = ctx.createBiquadFilter();
+        noiseFilter.type = 'lowpass';
+        noiseFilter.frequency.value = 400;
+        noiseFilter.Q.value = 0.5;
+
+        const noiseGain = ctx.createGain();
+        noiseGain.gain.value = 0.04;
+
+        noiseSource.connect(noiseFilter);
+        noiseFilter.connect(noiseGain);
+        noiseGain.connect(master);
+        noiseSource.start();
+
+        nodes = [drone1, drone2, shimmer, lfo, noiseSource];
+        return master;
+    }
+
+    function startAmbient() {
+        if (!audioCtx) {
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            masterGain = buildAmbientSound(audioCtx);
+        }
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        masterGain.gain.cancelScheduledValues(audioCtx.currentTime);
+        masterGain.gain.setValueAtTime(masterGain.gain.value, audioCtx.currentTime);
+        masterGain.gain.linearRampToValueAtTime(1, audioCtx.currentTime + 2); // 2s fade in
+        isPlaying = true;
+    }
+
+    function stopAmbient() {
+        if (!masterGain) return;
+        masterGain.gain.cancelScheduledValues(audioCtx.currentTime);
+        masterGain.gain.setValueAtTime(masterGain.gain.value, audioCtx.currentTime);
+        masterGain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 2); // 2s fade out
+        setTimeout(() => { if (!isPlaying && audioCtx) audioCtx.suspend(); }, 2100);
+        isPlaying = false;
+    }
+
+    window.__ambientToggle = function () {
+        if (!isPlaying) {
+            startAmbient();
+            return true; // now on
+        } else {
+            stopAmbient();
+            return false; // now off
+        }
+    };
+})();
+
 document.addEventListener('DOMContentLoaded', () => {
+    // Ambient Sound Toggle Button
+    const soundToggleBtn = document.getElementById('sound-toggle');
+    if (soundToggleBtn) {
+        soundToggleBtn.addEventListener('click', () => {
+            const nowOn = window.__ambientToggle();
+            const icon = soundToggleBtn.querySelector('i');
+            if (nowOn) {
+                soundToggleBtn.classList.add('sound-on');
+                icon.classList.replace('fa-volume-mute', 'fa-music');
+            } else {
+                soundToggleBtn.classList.remove('sound-on');
+                icon.classList.replace('fa-music', 'fa-volume-mute');
+            }
+        });
+    }
+
+
     // Custom Cursor
     const cursorDot = document.getElementById('cursor-dot');
     const cursorOutline = document.getElementById('cursor-outline');
@@ -329,6 +461,252 @@ document.addEventListener('DOMContentLoaded', () => {
                     // Resume tracking mouse based on current position
                 }, 1000);
             }, 400);
+        });
+    }
+
+    // =========================================
+    // INTERACTIVE HACKER TERMINAL
+    // =========================================
+    const terminalInput = document.getElementById('terminal-input');
+    const terminalOutput = document.getElementById('terminal-output');
+
+    const terminalCommands = {
+        help: () => `Available commands:<br>
+&nbsp;&nbsp;<span style="color:#00d2ff;">whoami</span>     - Who am I<br>
+&nbsp;&nbsp;<span style="color:#00d2ff;">skills</span>     - My tech stack<br>
+&nbsp;&nbsp;<span style="color:#00d2ff;">projects</span>   - My projects<br>
+&nbsp;&nbsp;<span style="color:#00d2ff;">contact</span>    - Get in touch<br>
+&nbsp;&nbsp;<span style="color:#00d2ff;">hobbies</span>    - What I love<br>
+&nbsp;&nbsp;<span style="color:#00d2ff;">clear</span>      - Clear terminal<br>
+&nbsp;&nbsp;<span style="color:#00d2ff;">github</span>     - My GitHub profile<br>
+&nbsp;&nbsp;<span style="color:#00d2ff;">joke</span>       - A developer joke`,
+        whoami: () => `Dev Kumar Jadaun — B.Tech CSE Student at GLA University, Mathura.<br>Java Developer | Full Stack Web Dev | AI Enthusiast | DSA Learner.`,
+        skills: () => `Languages: <span style="color:#00d2ff;">Java, JavaScript, C, Python, HTML, CSS</span><br>Frameworks: <span style="color:#00d2ff;">React.js, Vite, Tailwind CSS, MEAN Stack</span><br>Core: <span style="color:#00d2ff;">Data Structures & Algorithms, OOP, Git</span>`,
+        projects: () => `1. <span style="color:#00d2ff;">Weather Dashboard</span> — github.com/devjadaun/weather-dashboard<br>2. <span style="color:#00d2ff;">Smart Task Manager</span> — github.com/devjadaun/smart-task-manager`,
+        contact: () => `Email: <span style="color:#00d2ff;">devthakur6920@gmail.com</span><br>GitHub: <span style="color:#00d2ff;">github.com/devjadaun</span><br>LinkedIn: <span style="color:#00d2ff;">linkedin.com/in/dev-kumar-jadaun-479172396</span>`,
+        hobbies: () => `🎮 Competitive Programming<br>🤖 Exploring AI Tools<br>📝 Tech Blogging<br>🕹️ E-sports`,
+        github: () => { window.open('https://github.com/devjadaun', '_blank'); return `Opening GitHub profile...`; },
+        joke: () => {
+            const jokes = [
+                `Why do programmers prefer dark mode?<br>Because light attracts bugs! 🐛`,
+                `A SQL query walks into a bar, walks up to two tables and asks...<br>"Can I join you?" 😄`,
+                `Why do Java developers wear glasses?<br>Because they don't C#! 🤓`,
+            ];
+            return jokes[Math.floor(Math.random() * jokes.length)];
+        },
+        clear: () => { terminalOutput.innerHTML = ''; return null; },
+    };
+
+    if (terminalInput && terminalOutput) {
+        // Click anywhere on terminal to focus input
+        const terminalWindow = terminalInput.closest('.terminal-window');
+        if (terminalWindow) {
+            terminalWindow.addEventListener('click', () => terminalInput.focus());
+        }
+
+        terminalInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                const cmd = terminalInput.value.trim().toLowerCase();
+                terminalInput.value = '';
+
+                // Show the command the user typed
+                const cmdLine = document.createElement('div');
+                cmdLine.className = 'term-line';
+                cmdLine.innerHTML = `<span style="color:#00ff88;">dev_jadaun@portfolio</span>:<span style="color:#00d2ff;">~</span>$ ${cmd}`;
+                terminalOutput.appendChild(cmdLine);
+
+                if (cmd === '') return;
+
+                if (terminalCommands[cmd]) {
+                    const result = terminalCommands[cmd]();
+                    if (result !== null) {
+                        const resultLine = document.createElement('div');
+                        resultLine.className = 'term-result';
+                        resultLine.innerHTML = result;
+                        terminalOutput.appendChild(resultLine);
+                    }
+                } else {
+                    const errLine = document.createElement('div');
+                    errLine.className = 'term-error';
+                    errLine.textContent = `Command not found: '${cmd}'. Type 'help' for available commands.`;
+                    terminalOutput.appendChild(errLine);
+                }
+
+                // Auto scroll to bottom
+                terminalOutput.scrollTop = terminalOutput.scrollHeight;
+            }
+        });
+    }
+
+    // =========================================
+    // LIVE GITHUB STATS
+    // =========================================
+    async function fetchGitHubStats() {
+        try {
+            const userRes = await fetch('https://api.github.com/users/devjadaun');
+            if (!userRes.ok) throw new Error('GitHub API limit reached');
+            const userData = await userRes.json();
+
+            // Animate count-up for repos, followers, following
+            countUp('gh-repos-val', userData.public_repos);
+            countUp('gh-followers-val', userData.followers);
+            countUp('gh-following-val', userData.following);
+
+            // Fetch all repos to sum up total stars
+            const reposRes = await fetch('https://api.github.com/users/devjadaun/repos?per_page=100');
+            if (!reposRes.ok) throw new Error('Repos API failed');
+            const reposData = await reposRes.json();
+            const totalStars = reposData.reduce((sum, repo) => sum + repo.stargazers_count, 0);
+            countUp('gh-stars-val', totalStars);
+
+        } catch (err) {
+            // Show dash if API fails (e.g., rate limited)
+            ['gh-repos-val', 'gh-followers-val', 'gh-following-val', 'gh-stars-val'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.textContent = '–';
+            });
+        }
+    }
+
+    function countUp(elementId, target) {
+        const el = document.getElementById(elementId);
+        if (!el) return;
+        const duration = 1500;
+        const start = performance.now();
+        const step = (timestamp) => {
+            const progress = Math.min((timestamp - start) / duration, 1);
+            const eased = 1 - Math.pow(1 - progress, 3); // ease-out cubic
+            el.textContent = Math.floor(eased * target);
+            if (progress < 1) requestAnimationFrame(step);
+        };
+        requestAnimationFrame(step);
+    }
+
+    // Trigger when GitHub section is in view
+    const ghSection = document.getElementById('github-stats');
+    if (ghSection) {
+        const ghObserver = new IntersectionObserver((entries) => {
+            if (entries[0].isIntersecting) {
+                fetchGitHubStats();
+                ghObserver.disconnect();
+            }
+        }, { threshold: 0.2 });
+        ghObserver.observe(ghSection);
+    }
+
+    // =========================================
+    // ROCKET EASTER EGG 🚀
+    // =========================================
+    const rocketBtn = document.getElementById('rocket-easter-egg');
+    const rocketCanvas = document.getElementById('rocket-canvas');
+
+    if (rocketBtn && rocketCanvas) {
+        const ctx = rocketCanvas.getContext('2d');
+        let particles = [];
+        let rocketAnim = null;
+        let rocketY = 0;
+        let rocketX = 0;
+        let launched = false;
+
+        function resizeCanvas() {
+            rocketCanvas.width = window.innerWidth;
+            rocketCanvas.height = window.innerHeight;
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        function createParticle(x, y) {
+            particles.push({
+                x, y,
+                vx: (Math.random() - 0.5) * 4,
+                vy: Math.random() * 3 + 1,
+                size: Math.random() * 6 + 2,
+                alpha: 1,
+                color: `hsl(${Math.random() * 60 + 10}, 100%, 60%)`,
+            });
+        }
+
+        function drawRocket(x, y) {
+            ctx.save();
+            ctx.font = '40px serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('🚀', x, y);
+            ctx.restore();
+        }
+
+        function animateRocket() {
+            ctx.clearRect(0, 0, rocketCanvas.width, rocketCanvas.height);
+
+            // Draw particles (exhaust trail)
+            particles.forEach((p, i) => {
+                p.x += p.vx;
+                p.y += p.vy;
+                p.alpha -= 0.025;
+                if (p.alpha <= 0) { particles.splice(i, 1); return; }
+                ctx.save();
+                ctx.globalAlpha = p.alpha;
+                ctx.fillStyle = p.color;
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+            });
+
+            // Move rocket upward
+            rocketY -= 8;
+            for (let i = 0; i < 5; i++) createParticle(rocketX, rocketY + 30);
+            drawRocket(rocketX, rocketY);
+
+            // Explode at the top with fireworks
+            if (rocketY < -60) {
+                for (let i = 0; i < 60; i++) {
+                    particles.push({
+                        x: rocketX,
+                        y: 60,
+                        vx: (Math.random() - 0.5) * 12,
+                        vy: (Math.random() - 0.5) * 12,
+                        size: Math.random() * 5 + 2,
+                        alpha: 1,
+                        color: `hsl(${Math.random() * 360}, 100%, 65%)`,
+                    });
+                }
+                cancelAnimationFrame(rocketAnim);
+                // Finish drawing remaining particles
+                function finishParticles() {
+                    ctx.clearRect(0, 0, rocketCanvas.width, rocketCanvas.height);
+                    let alive = false;
+                    particles.forEach((p, i) => {
+                        p.x += p.vx;
+                        p.y += p.vy;
+                        p.vy += 0.15; // gravity
+                        p.alpha -= 0.018;
+                        if (p.alpha <= 0) { particles.splice(i, 1); return; }
+                        alive = true;
+                        ctx.save();
+                        ctx.globalAlpha = p.alpha;
+                        ctx.fillStyle = p.color;
+                        ctx.beginPath();
+                        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                        ctx.fill();
+                        ctx.restore();
+                    });
+                    if (alive) requestAnimationFrame(finishParticles);
+                    else launched = false; // allow re-launch
+                }
+                requestAnimationFrame(finishParticles);
+                return;
+            }
+
+            rocketAnim = requestAnimationFrame(animateRocket);
+        }
+
+        rocketBtn.addEventListener('click', () => {
+            if (launched) return;
+            launched = true;
+            particles = [];
+            rocketX = rocketBtn.getBoundingClientRect().left + 20;
+            rocketY = window.innerHeight - 80;
+            animateRocket();
         });
     }
 
