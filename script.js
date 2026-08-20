@@ -1,12 +1,117 @@
-// Preloader logic
-window.addEventListener('load', () => {
-    const preloader = document.getElementById('preloader');
-    if (preloader) {
-        // Add a slight delay for dramatic effect
-        setTimeout(() => {
-            preloader.style.opacity = '0';
-            preloader.style.visibility = 'hidden';
-        }, 1500);
+// =========================================
+// THREE.JS 3D UNIVERSE BACKGROUND
+// =========================================
+document.addEventListener('DOMContentLoaded', () => {
+    const canvas = document.getElementById('bg-canvas');
+    if (canvas && typeof THREE !== 'undefined') {
+        const scene = new THREE.Scene();
+        
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
+        
+        renderer.setPixelRatio(window.devicePixelRatio);
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        camera.position.setZ(30);
+        
+        // 1. Central Wireframe Planet (Icosahedron)
+        const geometry = new THREE.IcosahedronGeometry(10, 1);
+        const material = new THREE.MeshBasicMaterial({ 
+            color: 0x00d2ff, 
+            wireframe: true,
+            transparent: true,
+            opacity: 0.15
+        });
+        const planet = new THREE.Mesh(geometry, material);
+        scene.add(planet);
+
+        // 2. Floating Particles / Stars
+        const particlesGeometry = new THREE.BufferGeometry();
+        const particlesCount = 700;
+        const posArray = new Float32Array(particlesCount * 3);
+        
+        for(let i = 0; i < particlesCount * 3; i++) {
+            posArray[i] = (Math.random() - 0.5) * 100;
+        }
+        
+        particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+        const particlesMaterial = new THREE.PointsMaterial({
+            size: 0.15,
+            color: 0x8c9eb5,
+            transparent: true,
+            opacity: 0.8
+        });
+        
+        const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
+        scene.add(particlesMesh);
+
+        // Interaction Variables
+        let mouseX = 0;
+        let mouseY = 0;
+        let targetX = 0;
+        let targetY = 0;
+        const windowHalfX = window.innerWidth / 2;
+        const windowHalfY = window.innerHeight / 2;
+
+        document.addEventListener('mousemove', (event) => {
+            mouseX = (event.clientX - windowHalfX);
+            mouseY = (event.clientY - windowHalfY);
+        });
+
+        // Animation Loop
+        const clock = new THREE.Clock();
+
+        function animate() {
+            requestAnimationFrame(animate);
+            const elapsedTime = clock.getElapsedTime();
+
+            // Rotate Planet
+            planet.rotation.y += 0.002;
+            planet.rotation.x += 0.001;
+            
+            // Rotate Particles slowly
+            particlesMesh.rotation.y = -elapsedTime * 0.02;
+
+            // Ease towards mouse position
+            targetX = mouseX * 0.001;
+            targetY = mouseY * 0.001;
+            
+            planet.rotation.y += 0.05 * (targetX - planet.rotation.y);
+            planet.rotation.x += 0.05 * (targetY - planet.rotation.x);
+            
+            // Subtle camera movement based on scroll
+            camera.position.y = -(window.scrollY * 0.005);
+
+            renderer.render(scene, camera);
+        }
+        
+        animate();
+
+        // Handle Resize
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+        
+        // Theme changes: automatically update colors via MutationObserver
+        const observer = new MutationObserver((mutations) => {
+            mutations.forEach((mutation) => {
+                if (mutation.attributeName === 'data-theme') {
+                    const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+                    material.color.setHex(isLight ? 0x0369a1 : 0x00d2ff);
+                    material.opacity = isLight ? 0.25 : 0.15;
+                    particlesMaterial.color.setHex(isLight ? 0x4b5563 : 0x8c9eb5);
+                }
+            });
+        });
+        observer.observe(document.documentElement, { attributes: true });
+        
+        // Initial Theme check
+        if (document.documentElement.getAttribute('data-theme') === 'light') {
+            material.color.setHex(0x0369a1);
+            material.opacity = 0.25;
+            particlesMaterial.color.setHex(0x4b5563);
+        }
     }
 });
 
@@ -579,49 +684,132 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- Skills Radar Chart (Chart.js) ---
-    const radarCtx = document.getElementById('skillsRadarChart');
-    if (radarCtx) {
-        new Chart(radarCtx, {
-            type: 'radar',
-            data: {
-                labels: ['React.js', 'JavaScript', 'HTML/CSS', 'Java', 'Python', 'Node.js', 'MySQL', 'DSA'],
-                datasets: [{
-                    label: 'Skill Proficiency',
-                    data: [85, 90, 85, 80, 75, 70, 75, 85],
-                    backgroundColor: 'rgba(0, 210, 255, 0.2)',
-                    borderColor: '#00d2ff',
-                    pointBackgroundColor: '#00d2ff',
-                    pointBorderColor: '#fff',
-                    pointHoverBackgroundColor: '#fff',
-                    pointHoverBorderColor: '#00d2ff',
-                    borderWidth: 2
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                    r: {
-                        angleLines: { color: 'rgba(255, 255, 255, 0.1)' },
-                        grid: { color: 'rgba(255, 255, 255, 0.1)' },
-                        pointLabels: {
-                            color: '#a0aec0',
-                            font: { size: 12, family: "'Inter', sans-serif" }
-                        },
-                        ticks: { display: false, min: 0, max: 100 }
-                    }
-                },
-                plugins: {
-                    legend: { display: false },
-                    tooltip: {
-                        backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                        titleColor: '#fff',
-                        bodyColor: '#a0aec0',
-                        borderColor: '#00d2ff',
-                        borderWidth: 1
-                    }
+    // --- 3D Skill Cubes ---
+    const cubesContainer = document.getElementById('skill-cubes-container');
+    if (cubesContainer && typeof THREE !== 'undefined') {
+        const width = cubesContainer.clientWidth;
+        const height = cubesContainer.clientHeight;
+        
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(60, width / height, 0.1, 1000);
+        camera.position.z = 8;
+        
+        const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+        renderer.setSize(width, height);
+        renderer.setPixelRatio(window.devicePixelRatio);
+        cubesContainer.appendChild(renderer.domElement);
+        
+        // Add lights
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+        scene.add(ambientLight);
+        
+        const dirLight = new THREE.DirectionalLight(0xffffff, 0.8);
+        dirLight.position.set(10, 20, 10);
+        scene.add(dirLight);
+        
+        const skills = [
+            { name: "Java", color: "#e23636", pos: [-3, 1, 0] },
+            { name: "React", color: "#00d2ff", pos: [0, 2, 0] },
+            { name: "Python", color: "#ffb347", pos: [3, 1, 0] },
+            { name: "Node.js", color: "#27c93f", pos: [-1.5, -1.5, 0] },
+            { name: "DSA", color: "#b336ff", pos: [1.5, -1.5, 0] }
+        ];
+        
+        const cubes = [];
+        
+        skills.forEach((skill, index) => {
+            // Create canvas texture for text
+            const canvas = document.createElement('canvas');
+            canvas.width = 256;
+            canvas.height = 256;
+            const ctx = canvas.getContext('2d');
+            
+            // Background
+            ctx.fillStyle = skill.color;
+            ctx.fillRect(0, 0, 256, 256);
+            
+            // Border
+            ctx.strokeStyle = '#ffffff';
+            ctx.lineWidth = 10;
+            ctx.strokeRect(5, 5, 246, 246);
+            
+            // Text
+            ctx.fillStyle = '#ffffff';
+            ctx.font = 'bold 50px Arial';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(skill.name, 128, 128);
+            
+            const texture = new THREE.CanvasTexture(canvas);
+            
+            const geometry = new THREE.BoxGeometry(1.5, 1.5, 1.5);
+            const material = new THREE.MeshStandardMaterial({ 
+                map: texture,
+                roughness: 0.2,
+                metalness: 0.1
+            });
+            
+            const cube = new THREE.Mesh(geometry, material);
+            cube.position.set(...skill.pos);
+            
+            // Initial random rotation
+            cube.rotation.x = Math.random() * Math.PI;
+            cube.rotation.y = Math.random() * Math.PI;
+            
+            scene.add(cube);
+            cubes.push({ mesh: cube, speed: (Math.random() * 0.02) + 0.01 });
+        });
+        
+        // Raycaster for hover interaction
+        const raycaster = new THREE.Raycaster();
+        const mouse = new THREE.Vector2();
+        
+        cubesContainer.addEventListener('mousemove', (e) => {
+            const rect = cubesContainer.getBoundingClientRect();
+            mouse.x = ((e.clientX - rect.left) / width) * 2 - 1;
+            mouse.y = -((e.clientY - rect.top) / height) * 2 + 1;
+        });
+        
+        let hoveredCube = null;
+        
+        function animateCubes() {
+            requestAnimationFrame(animateCubes);
+            
+            raycaster.setFromCamera(mouse, camera);
+            const intersects = raycaster.intersectObjects(cubes.map(c => c.mesh));
+            
+            if (intersects.length > 0) {
+                if (hoveredCube !== intersects[0].object) {
+                    // Reset old hovered
+                    if (hoveredCube) hoveredCube.scale.set(1, 1, 1);
+                    hoveredCube = intersects[0].object;
+                    hoveredCube.scale.set(1.2, 1.2, 1.2);
+                    cubesContainer.style.cursor = 'pointer';
+                }
+            } else {
+                if (hoveredCube) {
+                    hoveredCube.scale.set(1, 1, 1);
+                    hoveredCube = null;
+                    cubesContainer.style.cursor = 'default';
                 }
             }
+            
+            cubes.forEach(c => {
+                c.mesh.rotation.x += c.speed;
+                c.mesh.rotation.y += c.speed;
+            });
+            
+            renderer.render(scene, camera);
+        }
+        
+        animateCubes();
+        
+        window.addEventListener('resize', () => {
+            const newWidth = cubesContainer.clientWidth;
+            const newHeight = cubesContainer.clientHeight;
+            camera.aspect = newWidth / newHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(newWidth, newHeight);
         });
     }
 });

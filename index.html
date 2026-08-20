@@ -20,77 +20,18 @@
     <link rel="stylesheet" href="style.css">
     <!-- Chart.js for Skills Radar -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Three.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
 </head>
 <body>
-    <!-- Preloader -->
-    <div id="preloader">
-        <div class="preloader-content">
-            <div class="reactor-loader">
-                <div class="core-inner"></div>
-                <div class="core-outer"></div>
-                <div class="ring"></div>
-            </div>
-            <div class="loading-text">INITIALIZING SYSTEM...</div>
-        </div>
-    </div>
+
 
     <!-- Rocket Easter Egg -->
     <div id="rocket-easter-egg" title="Click to launch! 🚀" style="position: fixed; bottom: 30px; right: 30px; z-index: 9000; cursor: pointer; font-size: 2rem; opacity: 0.6; transition: opacity 0.3s; user-select: none;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.6'">🚀</div>
     <canvas id="rocket-canvas" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 8999;"></canvas>
 
-    <!-- Marvel Animations Container -->
-    <div id="marvel-container">
-        <!-- Arc Reactor Background -->
-        <div class="arc-reactor-bg">
-            <div class="arc-reactor">
-                <div class="core-inner"></div>
-                <div class="core-outer"></div>
-                <div class="ring">
-                    <div class="coil"></div>
-                    <div class="coil"></div>
-                    <div class="coil"></div>
-                    <div class="coil"></div>
-                    <div class="coil"></div>
-                    <div class="coil"></div>
-                    <div class="coil"></div>
-                    <div class="coil"></div>
-                </div>
-            </div>
-        </div>
-        <!-- Spider-Man Hanging -->
-        <div class="spidey-container">
-            <div class="web-line"></div>
-            <div class="spidey">
-                <!-- Simple SVG representation of Spider-Man hanging upside down -->
-                <svg width="60" height="100" viewBox="0 0 60 100">
-                    <g transform="scale(1, -1) translate(0, -100)">
-                        <circle cx="30" cy="85" r="10" fill="#e23636"/>
-                        <path d="M25 85 Q30 90 35 85" stroke="#000" stroke-width="1.5" fill="none"/>
-                        <!-- Eyes -->
-                        <path d="M24 87 L20 82 L26 83 Z" fill="#fff" stroke="#000" stroke-width="1"/>
-                        <path d="M36 87 L40 82 L34 83 Z" fill="#fff" stroke="#000" stroke-width="1"/>
-                        <!-- Body -->
-                        <path d="M25 75 L20 50 L40 50 L35 75 Z" fill="#005b96"/>
-                        <path d="M25 75 L30 65 L35 75 Z" fill="#e23636"/>
-                        <!-- Legs (hanging up) -->
-                        <path d="M20 50 Q10 70 25 100" stroke="#005b96" stroke-width="8" fill="none" stroke-linecap="round"/>
-                        <path d="M40 50 Q50 70 35 100" stroke="#005b96" stroke-width="8" fill="none" stroke-linecap="round"/>
-                        <!-- Arms (hanging down) -->
-                        <path d="M25 70 Q10 50 15 30" stroke="#e23636" stroke-width="6" fill="none" stroke-linecap="round"/>
-                        <path d="M35 70 Q50 50 45 30" stroke="#e23636" stroke-width="6" fill="none" stroke-linecap="round"/>
-                    </g>
-                </svg>
-            </div>
-        </div>
-        <!-- Thor's Hammer (Scroll Animation) -->
-        <div id="thor-hammer" class="thor-hammer">
-            <div class="hammer-handle"></div>
-            <div class="hammer-head">
-                <div class="hammer-bevel"></div>
-            </div>
-            <div class="hammer-strap"></div>
-        </div>
-    </div>
+    <!-- Three.js Background Canvas -->
+    <canvas id="bg-canvas" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none;"></canvas>
     <!-- Custom Cursor -->
     <div class="cursor-dot" id="cursor-dot"></div>
     <div class="cursor-outline" id="cursor-outline"></div>
@@ -140,7 +81,7 @@
         <div class="container">
             <h2 class="section-title reveal">About <span class="text-gradient">Me</span></h2>
             <div class="about-content">
-                <div class="terminal-window glass-panel reveal tilt-card" style="width: 100%; max-width: 800px; text-align: left; padding: 0; overflow: hidden;">
+                <div class="terminal-window glass-panel reveal tilt-card" style="width: 100%; max-width: 800px; text-align: left; padding: 0; overflow: hidden; background: #0a0a0f;">
                     <div class="terminal-header" style="background: rgba(0,0,0,0.5); padding: 10px 15px; display: flex; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.1);">
                         <div class="terminal-buttons" style="display: flex; gap: 8px;">
                             <span style="width: 12px; height: 12px; border-radius: 50%; background: #ff5f56;"></span>
@@ -191,9 +132,9 @@
         <div class="container">
             <h2 class="section-title reveal">My <span class="text-gradient">Arsenal</span></h2>
             <div class="skills-layout reveal" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; align-items: start;">
-                <!-- Radar Chart -->
-                <div class="skills-chart glass-panel tilt-card" style="padding: 1.5rem; display: flex; justify-content: center; align-items: center; min-height: 350px;">
-                    <canvas id="skillsRadarChart"></canvas>
+                <!-- 3D Skill Cubes -->
+                <div class="skill-category glass-panel reveal tilt-card" style="display: flex; justify-content: center; align-items: center; min-height: 350px; padding: 0; overflow: hidden;">
+                    <div id="skill-cubes-container" style="width: 100%; height: 350px; position: relative;"></div>
                 </div>
                 
                 <div class="skills-container" style="display: flex; flex-direction: column; gap: 1.5rem; width: 100%;">
