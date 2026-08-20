@@ -10,139 +10,7 @@ window.addEventListener('load', () => {
     }
 });
 
-// =========================================
-// AMBIENT SOUND ENGINE (Web Audio API)
-// Generates a lo-fi atmospheric drone -
-// no external audio file required!
-// =========================================
-(function () {
-    let audioCtx = null;
-    let masterGain = null;
-    let isPlaying = false;
-    let nodes = [];
-
-    function buildAmbientSound(ctx) {
-        const master = ctx.createGain();
-        master.gain.setValueAtTime(0, ctx.currentTime);
-        master.connect(ctx.destination);
-
-        // --- Soft bass drone (sine wave) ---
-        const drone1 = ctx.createOscillator();
-        drone1.type = 'sine';
-        drone1.frequency.value = 55; // A1 note
-        const drone1Gain = ctx.createGain();
-        drone1Gain.gain.value = 0.08;
-        drone1.connect(drone1Gain);
-        drone1Gain.connect(master);
-        drone1.start();
-
-        // --- Slightly detuned second drone for warmth ---
-        const drone2 = ctx.createOscillator();
-        drone2.type = 'sine';
-        drone2.frequency.value = 55.6; // very slightly detuned
-        const drone2Gain = ctx.createGain();
-        drone2Gain.gain.value = 0.06;
-        drone2.connect(drone2Gain);
-        drone2Gain.connect(master);
-        drone2.start();
-
-        // --- High harmonic shimmer ---
-        const shimmer = ctx.createOscillator();
-        shimmer.type = 'sine';
-        shimmer.frequency.value = 220; // A3
-        const shimmerGain = ctx.createGain();
-        shimmerGain.gain.value = 0.025;
-        // LFO to make shimmer breathe
-        const lfo = ctx.createOscillator();
-        lfo.frequency.value = 0.2;
-        const lfoGain = ctx.createGain();
-        lfoGain.gain.value = 0.015;
-        lfo.connect(lfoGain);
-        lfoGain.connect(shimmerGain.gain);
-        lfo.start();
-        shimmer.connect(shimmerGain);
-        shimmerGain.connect(master);
-        shimmer.start();
-
-        // --- Filtered white noise (rain/wind texture) ---
-        const bufferSize = ctx.sampleRate * 4; // 4 seconds of noise
-        const noiseBuffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
-        const data = noiseBuffer.getChannelData(0);
-        for (let i = 0; i < bufferSize; i++) {
-            data[i] = Math.random() * 2 - 1;
-        }
-        const noiseSource = ctx.createBufferSource();
-        noiseSource.buffer = noiseBuffer;
-        noiseSource.loop = true;
-
-        // Low-pass filter to make it a soft hiss, not harsh
-        const noiseFilter = ctx.createBiquadFilter();
-        noiseFilter.type = 'lowpass';
-        noiseFilter.frequency.value = 400;
-        noiseFilter.Q.value = 0.5;
-
-        const noiseGain = ctx.createGain();
-        noiseGain.gain.value = 0.04;
-
-        noiseSource.connect(noiseFilter);
-        noiseFilter.connect(noiseGain);
-        noiseGain.connect(master);
-        noiseSource.start();
-
-        nodes = [drone1, drone2, shimmer, lfo, noiseSource];
-        return master;
-    }
-
-    function startAmbient() {
-        if (!audioCtx) {
-            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            masterGain = buildAmbientSound(audioCtx);
-        }
-        if (audioCtx.state === 'suspended') audioCtx.resume();
-        masterGain.gain.cancelScheduledValues(audioCtx.currentTime);
-        masterGain.gain.setValueAtTime(masterGain.gain.value, audioCtx.currentTime);
-        masterGain.gain.linearRampToValueAtTime(1, audioCtx.currentTime + 2); // 2s fade in
-        isPlaying = true;
-    }
-
-    function stopAmbient() {
-        if (!masterGain) return;
-        masterGain.gain.cancelScheduledValues(audioCtx.currentTime);
-        masterGain.gain.setValueAtTime(masterGain.gain.value, audioCtx.currentTime);
-        masterGain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 2); // 2s fade out
-        setTimeout(() => { if (!isPlaying && audioCtx) audioCtx.suspend(); }, 2100);
-        isPlaying = false;
-    }
-
-    window.__ambientToggle = function () {
-        if (!isPlaying) {
-            startAmbient();
-            return true; // now on
-        } else {
-            stopAmbient();
-            return false; // now off
-        }
-    };
-})();
-
 document.addEventListener('DOMContentLoaded', () => {
-    // Ambient Sound Toggle Button
-    const soundToggleBtn = document.getElementById('sound-toggle');
-    if (soundToggleBtn) {
-        soundToggleBtn.addEventListener('click', () => {
-            const nowOn = window.__ambientToggle();
-            const icon = soundToggleBtn.querySelector('i');
-            if (nowOn) {
-                soundToggleBtn.classList.add('sound-on');
-                icon.classList.replace('fa-volume-mute', 'fa-music');
-            } else {
-                soundToggleBtn.classList.remove('sound-on');
-                icon.classList.replace('fa-music', 'fa-volume-mute');
-            }
-        });
-    }
-
-
     // Custom Cursor
     const cursorDot = document.getElementById('cursor-dot');
     const cursorOutline = document.getElementById('cursor-outline');
@@ -710,4 +578,50 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // --- Skills Radar Chart (Chart.js) ---
+    const radarCtx = document.getElementById('skillsRadarChart');
+    if (radarCtx) {
+        new Chart(radarCtx, {
+            type: 'radar',
+            data: {
+                labels: ['React.js', 'JavaScript', 'HTML/CSS', 'Java', 'Python', 'Node.js', 'MySQL', 'DSA'],
+                datasets: [{
+                    label: 'Skill Proficiency',
+                    data: [85, 90, 85, 80, 75, 70, 75, 85],
+                    backgroundColor: 'rgba(0, 210, 255, 0.2)',
+                    borderColor: '#00d2ff',
+                    pointBackgroundColor: '#00d2ff',
+                    pointBorderColor: '#fff',
+                    pointHoverBackgroundColor: '#fff',
+                    pointHoverBorderColor: '#00d2ff',
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    r: {
+                        angleLines: { color: 'rgba(255, 255, 255, 0.1)' },
+                        grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                        pointLabels: {
+                            color: '#a0aec0',
+                            font: { size: 12, family: "'Inter', sans-serif" }
+                        },
+                        ticks: { display: false, min: 0, max: 100 }
+                    }
+                },
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                        titleColor: '#fff',
+                        bodyColor: '#a0aec0',
+                        borderColor: '#00d2ff',
+                        borderWidth: 1
+                    }
+                }
+            }
+        });
+    }
 });
